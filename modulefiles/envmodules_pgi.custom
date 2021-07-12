@@ -21,7 +21,7 @@ ${retv} 1
 ####################
 ### (1) Load all needed environment modules.
 module purge
-module load pgi impi
+module load pgi openmpi
 module load szip hdf5
 module load netcdf
 
