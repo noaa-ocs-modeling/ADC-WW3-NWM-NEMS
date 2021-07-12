@@ -1,7 +1,7 @@
 ## NEMS configuration file
 ##
 ## Platform: Generic/Linux
-## Compiler: PGI with MPI   --- needs fixing
+## Compiler: GNU with MPI   --- needs fixing
 
 SHELL           = /bin/sh
 
@@ -11,16 +11,16 @@ include         $(TOP)/conf/configure.nems.NUOPC
 
 ################################################################################
 ## Other settings
+#
+CC=mpicc
+CXX=mpicxx
+FC=mpifort
 
-LIBDIR      ?= .
+NETCDF_INC   = -I$(NETCDF_INCDIR)
+NETCDF_LIB   = -L$(NETCDF_LIBDIR) -lnetcdf
 
-NETCDF_INC   = -I${NETCDF_INCDIR}
-NETCDF_LIB   = -L${NETCDF_LIBDIR} -lnetcdf
-
-#NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
-#NEMSIO_LIB   = -L${LIBDIR} -lnemsio
-NEMSIO_INC   =
-NEMSIO_LIB   =
+NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
+NEMSIO_LIB   = -L${LIBDIR} -lnemsio
 SYS_LIB      =
 
 EXTLIBS      = $(NEMSIO_LIB) \
@@ -33,18 +33,18 @@ EXTLIBS_POST = $(NEMSIO_LIB)  \
                $(NETCDF_LIB)  \
                $(SYS_LIB)
 ###
-FC          = mpif90 -g -Mextend -Minform,inform -Mbounds
-F77         = mpif90 -g -Mextend -Minform,inform -Mbounds
+FC          = mpifort -g -ffree-line-length-none -fno-range-check -fbacktrace -fallow-argument-mismatch
+F77         = mpifort -g -ffree-line-length-none -fno-range-check -fbacktrace
 FREE         = -free
-FIXED        =
+FIXED        = -fixed
 R8           = -r8
 
 FINCS        = $(ESMF_INC) $(NEMSIO_INC) $(NETCDF_INC)
-#TRAPS        = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check
+#TRAPS        = ???
 
-FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
+FFLAGS       = $(TRAPS) $(FINCS) 
 
-OPTS_NMM     = -g -Mextend -Minform,inform -Mbounds $(FREE)
+OPTS_NMM     = -g -ffree-line-length-none -fno-range-check -fbacktrace $(FREE)
 
 FFLAGM_DEBUG =
 
